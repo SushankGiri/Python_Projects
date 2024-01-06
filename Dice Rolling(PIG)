@@ -1,0 +1,195 @@
+import random
+import time
+
+Dice1 = [[""]*3 for i in range(3)]
+Dice2 = [[""]*3 for i in range(3)]
+Dice3 = [[""]*3 for i in range(3)]
+Dice4 = [[""]*3 for i in range(3)]
+Dice5 = [[""]*3 for i in range(3)]
+Dice6 = [[""]*3 for i in range(3)]
+
+# Dice 1 setup
+Dice1[1][1] = "O"
+# ..Dice 1 space fillings
+Dice1[0][1] = " "
+Dice1[2][1] = " "
+
+# Dice 2 setup
+Dice2[0][0] = "0"
+Dice2[2][2] = "0"
+# ..Dice2 space fillings
+Dice2[1][1] = " "
+
+# Dice 3 setup
+Dice3[1][0] = "0"
+Dice3[1][1] = "0"
+Dice3[1][2] = "0"
+Dice3[1][2] = "0"
+# ..Dice3 space fillings
+Dice3[0][1] = "   "
+Dice3[2][1] = "   "
+
+# Dice 4 setup
+Dice4[0][0] = "0"
+Dice4[0][2] = "0"
+Dice4[2][0] = "0"
+Dice4[2][2] = "0"
+# ..Dice4 space fillings
+Dice4[1][1] = "  "
+
+# Dice 5 setup
+Dice5[0][0] = "0"
+Dice5[0][2] = "0"
+Dice5[2][0] = "0"
+Dice5[2][2] = "0"
+Dice5[1][1] = "0"
+# ..Dice5 space fillings
+Dice5[1][0] = " "
+
+# Dice 6 setup
+Dice6[0][0] = "0"
+Dice6[1][0] = "0"
+Dice6[2][0] = "0"
+Dice6[0][2] = "0"
+Dice6[1][2] = "0"
+Dice6[2][2] = "0"
+# ..Dice6 space fillings
+#...Dice6 Doestnot need filings
+
+# clear screen function
+def cls():
+    print("\n"*50)
+
+
+# declare class player
+class Player:
+    def __init__(self, Score, Number):
+        self.__Score = Score
+        self.Number = Number
+
+
+    def addScore(self, Score):
+        self.__Score += Score
+    def setScoreZero(self):
+        self.__Score = 0
+    def getScore(self):
+        return self.__Score
+
+
+# roll a dice
+def rollDice():
+    cls()
+    print('rollin dice.......')
+    time.sleep(1)
+    for i in Dice1:
+        print(i)
+    print("\n")
+    time.sleep(1)
+    cls()
+    for i in Dice2:
+        print(i)
+    print("\n")
+    time.sleep(1)
+    cls()
+    for i in Dice3:
+        print(i)
+    print("\n")
+    time.sleep(1)
+    cls()
+    for i in Dice4:
+        print(i)
+    print("\n")
+    time.sleep(1)
+    cls()
+    for i in Dice5:
+        print(i)
+    print("\n")
+    time.sleep(1)
+    cls()
+    for i in Dice6:
+        print(i)
+    print("\n")
+    randDice = random.randint(1, 6)
+    printdice(randDice)
+    return randDice
+
+
+# function to print the dice player rolled
+def printdice(DiceNum):
+    match DiceNum:
+        case 1:
+            cls()
+            for i in Dice1:
+                print(i)
+            print("\n")
+        case 2:
+            cls()
+            for i in Dice2:
+                print(i)
+            print("\n")
+        case 3:
+            cls()
+            for i in Dice3:
+                print(i)
+            print("\n")
+        case 4:
+            cls()
+            for i in Dice4:
+                print(i)
+            print("\n")
+        case 5:
+            cls()
+            for i in Dice5:
+                print(i)
+            print("\n")
+        case 6:
+            cls()
+            for i in Dice6:
+                print(i)
+            print("\n")
+
+
+
+# main program
+# .value declarations
+NumberOfPlayers = int(input("Tell me the Number of player(s) you have"))
+NumberOfTurns = int(input("Tell me the number of turn(s) you want to play"))
+PlayersArray = []
+
+# .set all player score to 0 and arrange the array for descending player numbers
+for Players in range(1, NumberOfPlayers+1):
+    PlayersArray.append(Player(0, Players))
+
+
+# main loop
+# .. loop until
+while NumberOfTurns != 0:
+    for i in range(1, NumberOfPlayers + 1):
+        roll = 6
+        while roll != 1:
+            DumpVariable = int(input(f'player {i}.Please press 1 to roll a dice. enter 0 to stop rolling .'))
+            if DumpVariable != 1:
+                print(f'player{i} has chose to stop rollin with a score of...{PlayersArray[i - 1].getScore()}')
+                DumpVariable = 0
+                break
+            else:
+                DumpVariable = 0
+            roll = rollDice()
+            if roll > 1:
+                print(f'Player {i} rolled...{roll} it will be added to player {i} s score')
+                PlayersArray[i-1].addScore(roll)
+                print(f'player{i}score is now...{PlayersArray[i-1].getScore()}\n')
+            if roll == 1:
+                PlayersArray[i - 1].setScoreZero()
+                print(f'Player {i} rolled...{roll}.Player {i}s score is set to 0 now ..... sad..\n\n')
+    NumberOfTurns -= 1
+
+
+# leaderboards
+for i in range(len(PlayersArray)):
+    for j in range(len(PlayersArray) - i - 1):
+        if PlayersArray[j+1].getScore() < PlayersArray[j].getScore():
+            PlayersArray[j+1], PlayersArray[j] = PlayersArray[j], PlayersArray[j+1]
+# print the winner and the loser
+print(f'{PlayersArray[0].Number} has the lowest score....LOSERRRRRRR>>R>R>R>R')
+print(f'{PlayersArray[NumberOfPlayers-1].Number} has won the game with a score of {PlayersArray[NumberOfPlayers-1].getScore()}')
